@@ -1,0 +1,404 @@
+Aquí tienes el código completo en un solo archivo `index.html` para que puedas guardarlo directamente o subirlo a tu repositorio de GitHub Pages:
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversor de Unidades - Apéndice G</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #a855f7 0%, #3b82f6 50%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+    }
+    .gradient-bg:hover {
+      background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+    }
+    .custom-input {
+      background-color: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #f8fafc;
+      transition: all 0.2s ease;
+    }
+    .custom-input:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+      outline: none;
+    }
+    .custom-select {
+      background-color: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #f8fafc;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%3ca7f3d0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen justify-between p-4 sm:p-6 md:p-8">
+
+  <div class="max-w-2xl mx-auto w-full">
+    <!-- Header -->
+    <header class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs font-semibold mb-4">
+        <i class="fa-solid fa-book-bookmark"></i>
+        <span>Física y Conversiones Exactas</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2 gradient-text">
+        Conversor de Unidades
+      </h1>
+      <p class="text-slate-400 text-sm sm:text-base max-w-lg mx-auto mb-6">
+        Sistema Internacional y Sistema Inglés basados en los factores del <strong class="text-slate-200">Apéndice G</strong>.
+      </p>
+
+      <!-- Badge Alumno -->
+      <div class="glass-card inline-block text-left px-5 py-3 rounded-2xl border border-violet-500/20">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center text-violet-400 text-lg">
+            <i class="fa-solid fa-user-graduate"></i>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400 uppercase tracking-wider font-bold">Alumno</div>
+            <div class="text-sm font-bold text-slate-100">Andres Humberto Lazaro Angeles</div>
+            <div class="text-xs text-violet-400 font-medium">11 Informatica</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Card -->
+    <main class="glass-card rounded-3xl p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2 border-b border-slate-700/50 pb-4">
+        <i class="fa-solid fa-calculator text-violet-400"></i>
+        <span>Convertir Unidades</span>
+      </h2>
+
+      <form id="converter-form" onsubmit="event.preventDefault(); convert();" class="space-y-5">
+        <!-- Categoría -->
+        <div>
+          <label for="category" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            Categoría
+          </label>
+          <div class="relative">
+            <select id="category" class="custom-select w-full rounded-xl px-4 py-3 text-sm font-medium appearance-none cursor-pointer">
+              <option value="longitud">Longitud</option>
+              <option value="area">Área</option>
+              <option value="volumen">Volumen</option>
+              <option value="masa">Masa</option>
+              <option value="tiempo">Tiempo</option>
+              <option value="velocidad">Velocidad</option>
+              <option value="fuerza">Fuerza</option>
+              <option value="energia">Energía, Trabajo, Calor</option>
+              <option value="presion">Presión</option>
+              <option value="potencia">Potencia</option>
+              <option value="angulo">Ángulo Plano</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Cantidad -->
+        <div>
+          <label for="amount" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            Cantidad
+          </label>
+          <input type="number" step="any" id="amount" value="1" placeholder="Ingrese el valor..." class="custom-input w-full rounded-xl px-4 py-3 text-sm font-medium">
+        </div>
+
+        <!-- Selector Origen y Destino -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
+          <div>
+            <label for="unit-from" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+              Unidad de Origen
+            </label>
+            <select id="unit-from" class="custom-select w-full rounded-xl px-4 py-3 text-sm font-medium appearance-none cursor-pointer"></select>
+          </div>
+
+          <div>
+            <label for="unit-to" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+              Unidad de Destino
+            </label>
+            <select id="unit-to" class="custom-select w-full rounded-xl px-4 py-3 text-sm font-medium appearance-none cursor-pointer"></select>
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="pt-2 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <button type="submit" class="sm:col-span-1 gradient-bg text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-200 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-play text-xs"></i>
+            <span>Convertir</span>
+          </button>
+          <button type="button" onclick="swapUnits()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold py-3 px-4 rounded-xl transition duration-200 border border-slate-700 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-right-left text-xs"></i>
+            <span>Intercambiar</span>
+          </button>
+          <button type="button" onclick="resetForm()" class="bg-slate-800/50 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-3 px-4 rounded-xl transition duration-200 border border-slate-800 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-rotate-left text-xs"></i>
+            <span>Limpiar</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Resultado Box -->
+      <div id="result-card" class="mt-8 bg-gradient-to-br from-violet-950/40 to-slate-900/60 border border-violet-500/30 rounded-2xl p-6 text-center relative overflow-hidden">
+        <div class="text-xs uppercase tracking-widest font-semibold text-violet-400 mb-2" id="result-subtitle">
+          Resultado de la conversión
+        </div>
+        <div class="text-slate-300 text-sm mb-1" id="result-equivalence">
+          1 Metro (m) equivalen a
+        </div>
+        <div class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight my-2" id="result-main">
+          100 Centímetros (cm)
+        </div>
+        <div class="text-xs text-slate-400 mt-3 pt-3 border-t border-slate-800 flex items-center justify-center gap-2" id="result-formula">
+          <i class="fa-solid fa-microchip text-violet-400"></i> Factor de conversión exacto del Apéndice G
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-8 text-center text-xs text-slate-500">
+      <p>© Apéndice G - Factores de Conversión de Física | Desarrollado para 11 Informatica</p>
+    </footer>
+  </div>
+
+  <script>
+    // Datos de factores de conversión del Apéndice G
+    const conversionData = {
+      longitud: {
+        base: 'm',
+        units: {
+          'cm': { name: 'Centímetro (cm)', toBase: 0.01 },
+          'm': { name: 'METRO (m)', toBase: 1 },
+          'km': { name: 'Kilómetro (km)', toBase: 1000 },
+          'in': { name: 'Pulgada (in)', toBase: 0.0254 },
+          'ft': { name: 'Pie (ft)', toBase: 0.3048 },
+          'mi': { name: 'Milla (mi)', toBase: 1609.344 },
+          'yd': { name: 'Yarda (yd)', toBase: 0.9144 },
+          'angstrom': { name: 'Angstrom (Å)', toBase: 1e-10 }
+        }
+      },
+      area: {
+        base: 'm2',
+        units: {
+          'm2': { name: 'METRO CUADRADO (m²)', toBase: 1 },
+          'cm2': { name: 'Centímetro cuadrado (cm²)', toBase: 1e-4 },
+          'ft2': { name: 'Pie cuadrado (ft²)', toBase: 0.09290304 },
+          'in2': { name: 'Pulgada cuadrada (in²)', toBase: 0.00064516 },
+          'acre': { name: 'Acre', toBase: 4046.8564224 },
+          'hectarea': { name: 'Hectárea (ha)', toBase: 10000 }
+        }
+      },
+      volumen: {
+        base: 'm3',
+        units: {
+          'm3': { name: 'METRO CÚBICO (m³)', toBase: 1 },
+          'cm3': { name: 'Centímetro cúbico (cm³)', toBase: 1e-6 },
+          'L': { name: 'Litro (L)', toBase: 0.001 },
+          'ft3': { name: 'Pie cúbico (ft³)', toBase: 0.0283168 },
+          'in3': { name: 'Pulgada cúbica (in³)', toBase: 1.6387e-5 },
+          'gal': { name: 'Galón fluido U.S. (gal)', toBase: 0.00378541 }
+        }
+      },
+      masa: {
+        base: 'kg',
+        units: {
+          'g': { name: 'Gramo (g)', toBase: 0.001 },
+          'kg': { name: 'KILOGRAMO (kg)', toBase: 1 },
+          'slug': { name: 'Slug', toBase: 14.5939 },
+          'u': { name: 'Unidad de masa atómica (u)', toBase: 1.66054e-27 },
+          'oz': { name: 'Onza (oz)', toBase: 0.0283495 },
+          'lb': { name: 'Libra (lb)', toBase: 0.453592 },
+          'ton': { name: 'Tonelada (ton)', toBase: 907.1847 },
+          'ton_metrica': { name: 'Tonelada métrica', toBase: 1000 }
+        }
+      },
+      tiempo: {
+        base: 's',
+        units: {
+          's': { name: 'SEGUNDO (s)', toBase: 1 },
+          'min': { name: 'Minuto (min)', toBase: 60 },
+          'h': { name: 'Hora (h)', toBase: 3600 },
+          'd': { name: 'Día (d)', toBase: 86400 },
+          'y': { name: 'Año (y)', toBase: 31536000 }
+        }
+      },
+      velocidad: {
+        base: 'ms',
+        units: {
+          'fts': { name: 'Pie por segundo (ft/s)', toBase: 0.3048 },
+          'kmh': { name: 'Kilómetro por hora (km/h)', toBase: 0.277778 },
+          'ms': { name: 'METRO POR SEGUNDO (m/s)', toBase: 1 },
+          'mih': { name: 'Milla por hora (mi/h)', toBase: 0.44704 },
+          'cms': { name: 'Centímetro por segundo (cm/s)', toBase: 0.01 },
+          'nudo': { name: 'Nudo', toBase: 0.514444 }
+        }
+      },
+      fuerza: {
+        base: 'N',
+        units: {
+          'dina': { name: 'Dina', toBase: 1e-5 },
+          'N': { name: 'NEWTON (N)', toBase: 1 },
+          'lb': { name: 'Libra fuerza (lb)', toBase: 4.44822 },
+          'pdl': { name: 'Poundal (pdl)', toBase: 0.138255 },
+          'gf': { name: 'Gramo-fuerza (gf)', toBase: 0.00980665 },
+          'kgf': { name: 'Kilogramo-fuerza (kgf)', toBase: 9.80665 }
+        }
+      },
+      energia: {
+        base: 'J',
+        units: {
+          'btu': { name: 'Unidad térmica británica (Btu)', toBase: 1055.06 },
+          'erg': { name: 'Ergio (erg)', toBase: 1e-7 },
+          'ftlb': { name: 'Pie-libra (ft·lb)', toBase: 1.35582 },
+          'hph': { name: 'Caballo de fuerza-hora (hp·h)', toBase: 2.6845e6 },
+          'J': { name: 'JOULE (J)', toBase: 1 },
+          'cal': { name: 'Caloría (cal)', toBase: 4.1868 },
+          'kwh': { name: 'Kilowatt-hora (kW·h)', toBase: 3.6e6 },
+          'ev': { name: 'Electrónvolt (eV)', toBase: 1.60218e-19 }
+        }
+      },
+      presion: {
+        base: 'Pa',
+        units: {
+          'atm': { name: 'Atmósfera (atm)', toBase: 101325 },
+          'dinacm2': { name: 'Dina/cm²', toBase: 0.1 },
+          'inH2O': { name: 'Pulgada de agua a 4°C', toBase: 249.088 },
+          'cmHg': { name: 'Centímetro de mercurio (cmHg)', toBase: 1333.22 },
+          'Pa': { name: 'PASCAL (Pa)', toBase: 1 },
+          'lbin2': { name: 'Libra por in² (psi)', toBase: 6894.76 },
+          'lbft2': { name: 'Libra por ft²', toBase: 47.8803 },
+          'bar': { name: 'Bar', toBase: 100000 }
+        }
+      },
+      potencia: {
+        base: 'W',
+        units: {
+          'btuh': { name: 'Btu/h', toBase: 0.293071 },
+          'ftlbs': { name: 'Pie-libra/segundo (ft·lb/s)', toBase: 1.35582 },
+          'hp': { name: 'Caballo de fuerza (hp)', toBase: 745.7 },
+          'cals': { name: 'Caloría/segundo (cal/s)', toBase: 4.1868 },
+          'kW': { name: 'KILOWATT (kW)', toBase: 1000 },
+          'W': { name: 'WATT (W)', toBase: 1 }
+        }
+      },
+      angulo: {
+        base: 'rad',
+        units: {
+          'deg': { name: 'Grado (°)', toBase: Math.PI / 180 },
+          'min': { name: 'Minuto (\')', toBase: Math.PI / (180 * 60) },
+          'sec': { name: 'Segundo (")', toBase: Math.PI / (180 * 3600) },
+          'rad': { name: 'RADIAN (rad)', toBase: 1 },
+          'rev': { name: 'Revolución (rev)', toBase: 2 * Math.PI }
+        }
+      }
+    };
+
+    const categorySelect = document.getElementById('category');
+    const unitFromSelect = document.getElementById('unit-from');
+    const unitToSelect = document.getElementById('unit-to');
+    const amountInput = document.getElementById('amount');
+
+    function populateUnits() {
+      const cat = categorySelect.value;
+      const units = conversionData[cat].units;
+      
+      unitFromSelect.innerHTML = '';
+      unitToSelect.innerHTML = '';
+
+      const keys = Object.keys(units);
+      keys.forEach((key, index) => {
+        const option1 = new Option(units[key].name, key);
+        const option2 = new Option(units[key].name, key);
+        unitFromSelect.add(option1);
+        unitToSelect.add(option2);
+      });
+
+      if (keys.length > 1) {
+        unitToSelect.selectedIndex = 1;
+      }
+      convert();
+    }
+
+    function convert() {
+      const cat = categorySelect.value;
+      const amount = parseFloat(amountInput.value);
+      const fromKey = unitFromSelect.value;
+      const toKey = unitToSelect.value;
+
+      if (isNaN(amount)) {
+        document.getElementById('result-main').innerText = 'Ingrese un número válido';
+        document.getElementById('result-equivalence').innerText = '-';
+        return;
+      }
+
+      const fromUnit = conversionData[cat].units[fromKey];
+      const toUnit = conversionData[cat].units[toKey];
+
+      // Convertir de origen a base, luego de base a destino
+      const valInBase = amount * fromUnit.toBase;
+      const resultVal = valInBase / toUnit.toBase;
+
+      // Formato numérico
+      let formattedResult;
+      if (Math.abs(resultVal) < 0.0001 || Math.abs(resultVal) > 1000000) {
+        formattedResult = resultVal.toExponential(4);
+      } else {
+        formattedResult = Number(resultVal.toFixed(6)).toString();
+      }
+
+      document.getElementById('result-equivalence').innerText = `${amount} ${fromUnit.name} equivalen a`;
+      document.getElementById('result-main').innerText = `${formattedResult} ${toUnit.name}`;
+      
+      const factorDirect = fromUnit.toBase / toUnit.toBase;
+      let factorText = Math.abs(factorDirect) < 0.0001 || Math.abs(factorDirect) > 1000000 
+        ? factorDirect.toExponential(4) 
+        : Number(factorDirect.toFixed(6));
+        
+      document.getElementById('result-formula').innerHTML = 
+        `<i class="fa-solid fa-microchip text-violet-400"></i> Factor de conversión: 1 ${fromUnit.name.split(' ')[0]} = ${factorText} ${toUnit.name.split(' ')[0]}`;
+    }
+
+    function swapUnits() {
+      const temp = unitFromSelect.value;
+      unitFromSelect.value = unitToSelect.value;
+      unitToSelect.value = temp;
+      convert();
+    }
+
+    function resetForm() {
+      amountInput.value = 1;
+      categorySelect.selectedIndex = 0;
+      populateUnits();
+    }
+
+    // Event Listeners
+    categorySelect.addEventListener('change', populateUnits);
+    unitFromSelect.addEventListener('change', convert);
+    unitToSelect.addEventListener('change', convert);
+    amountInput.addEventListener('input', convert);
+
+    // Inicializar
+    populateUnits();
+  </script>
+</body>
+</html>
+
+```
